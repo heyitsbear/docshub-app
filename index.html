@@ -201,6 +201,15 @@
 
       window.addEventListener('message', (event) => {
         if (!event.data) return;
+        if (event.data.type === 'DOCSHUB_PING_SHELL' && event.source) {
+          try {
+            event.source.postMessage({
+              type: 'DOCSHUB_PWA_STATUS',
+              canPrompt: !!deferredPrompt,
+              isStandalone: isStandalone
+            }, '*');
+          } catch (_) {}
+        }
         if (event.data.type === 'DOCSHUB_TRIGGER_PWA_INSTALL') {
           triggerInstall();
         }
